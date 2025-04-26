@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,9 +28,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ebc.loteriamulti.viewmodel.AdivinaViewModel
 import com.ebc.loteriamulti.viewmodel.LoteriaViewModel
+import com.ebc.loteriamulti.viewmodel.NumeroImparViewModel
 import com.ebc.loteriamulti.views.navviews.AdivinaView
 import com.ebc.loteriamulti.views.navviews.LoteriaView
 import com.ebc.loteriamulti.views.navviews.MainView
+import com.ebc.loteriamulti.views.navviews.NumeroImparView
 import kotlinx.coroutines.launch
 
 @Composable
@@ -35,8 +41,8 @@ fun GameNavController() {
 
     val loteriaViewModel: LoteriaViewModel = LoteriaViewModel()
     val adivinaViewModel: AdivinaViewModel = AdivinaViewModel()
+    val numeroImparViewModel: NumeroImparViewModel = NumeroImparViewModel()
 
-    //Remembers del top var y otros relacionados
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -51,11 +57,11 @@ fun GameNavController() {
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
             ) {
                 TextButton(
-                   onClick = {
-                       navController.navigate("loteria")
-                       scope.launch { scaffoldState.drawerState.close()
-                       }
-                   }
+                    onClick = {
+                        navController.navigate("loteria")
+                        scope.launch { scaffoldState.drawerState.close()
+                        }
+                    }
                 ) { Text("Lotería") }
                 TextButton(
                     onClick = {
@@ -64,6 +70,13 @@ fun GameNavController() {
                         }
                     }
                 ) { Text("Adivina el número") }
+                TextButton(
+                    onClick = {
+                        navController.navigate("parimpar")
+                        scope.launch { scaffoldState.drawerState.close()
+                        }
+                    }
+                ) { Text("Número Impar") }
             }
         },
 
@@ -74,6 +87,7 @@ fun GameNavController() {
             val appBarTitle = when (currentRoute) {
                 "loteria" -> "Lotería clásica"
                 "adivina" -> "Adivina el número"
+                "impar" -> "Número Impar"
                 else -> "Loterías y Más"
             }
 
@@ -85,11 +99,23 @@ fun GameNavController() {
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            scope.launch { scaffoldState.drawerState.open() }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Menú"
+                        )
+                    }
                 }
             )
         }
     ) {
-        innerPading ->
+            innerPading ->
         NavHost(
             navController = navController,
             startDestination = "main",
@@ -103,8 +129,9 @@ fun GameNavController() {
             composable("adivina") {
                 AdivinaView(navController, adivinaViewModel)
             }
+            composable("parimpar") {
+                NumeroImparView(navController, numeroImparViewModel)
+            }
         }
     }
-
-
 }

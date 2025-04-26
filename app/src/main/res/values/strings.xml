@@ -3,6 +3,6 @@
     <string name="main_view_tittle">Loterías y más</string>
     <string name="lottery">Lotería</string>
     <string name="guess_number">Adivina el #</string>
-
+    <string name="par_impar">Par o Impar</string>
     <string name="generate_numbers">Generar Números</string>
 </resources>
