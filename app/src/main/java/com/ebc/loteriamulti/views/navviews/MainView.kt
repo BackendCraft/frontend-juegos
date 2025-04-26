@@ -37,12 +37,6 @@ fun MainView(navController: NavHostController) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        /*Text(
-            text = stringResource(R.string.main_view_tittle),
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.purple_700)
-        )*/
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,24 +44,31 @@ fun MainView(navController: NavHostController) {
                 .align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
-
         ) {
+            // Lotería Clásica
             GameOption(
                 idRaw = R.raw.lottie_loteria,
                 label = stringResource(R.string.lottery),
-                onClick = { navController.navigate("loteria")}
+                onClick = { navController.navigate("loteria") }
             )
+
+            // Adivina el Número
             GameOption(
                 idRaw = R.raw.lottie_adivina,
                 label = stringResource(R.string.guess_number),
                 onClick = { navController.navigate("adivina") }
             )
 
+            // Par/Impar
+            GameOption(
+                idRaw = R.raw.lottie_parimpar,
+                label = stringResource(R.string.par_impar),
+                onClick = { navController.navigate("parimpar") }
+            )
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun GameOption(
     idRaw: Int = R.raw.lottie_loteria,
@@ -76,7 +77,9 @@ fun GameOption(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable { onClick() }
+        modifier = Modifier
+            .clickable { onClick() }
+            .padding(8.dp)
     ) {
         val composition by rememberLottieComposition(
             LottieCompositionSpec.RawRes(idRaw)
@@ -84,24 +87,16 @@ fun GameOption(
         LottieAnimation(
             composition = composition,
             iterations = LottieConstants.IterateForever,
-            modifier = Modifier.size(150.dp)
+            modifier = Modifier.size(120.dp)
         )
         Text(
             text = label,
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 8.dp)
         )
     }
 }
-
-/*@Preview(showBackground = true)
-@Composable
-fun GameOptionPreview() {
-    LoteriaMultiTheme {
-        GameOption(R.raw.lottie_loteria, "Opción", {})
-    }
-}*/
 
 @Preview(showBackground = true)
 @Composable
